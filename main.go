@@ -7,6 +7,8 @@ import (
 	"syscall"
 	"time"
 
+	"Chandara-Sin/supergo-api/employee"
+
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -36,7 +38,9 @@ func main() {
 		panic(err)
 	}
 
-	client.Database("supergo")
+	mongodb := client.Database("supergo")
+
+	e.POST("/employees", employee.CreateEmployeeHandler(employee.Create(mongodb)))
 
 	go func() {
 		if err := e.Start(":8080"); err != nil {
