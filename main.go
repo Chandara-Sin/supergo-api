@@ -48,6 +48,7 @@ func main() {
 	em.POST("", employee.CreateEmployeeHandler(employee.Create(mongodb)))
 	em.GET("/:id", employee.GetEmployeeHandler(employee.GetEmployee(mongodb)))
 	em.GET("", employee.GetEmployeeListHandler(employee.GetEmployeeList(mongodb)))
+	em.PUT("", employee.UpdateEmployeeHandler(employee.Update(mongodb)))
 
 	go func() {
 		if err := e.Start(":" + viper.GetString("app.port")); err != nil {
