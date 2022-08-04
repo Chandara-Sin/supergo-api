@@ -9,9 +9,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type createEmployeeFunc func(context.Context, Employee) (primitive.ObjectID, error)
+type createEmployeeFunc func(context.Context, Employee) (*primitive.ObjectID, error)
 
-func (fn createEmployeeFunc) CreateEmployee(ctx context.Context, reqEmployee Employee) (primitive.ObjectID, error) {
+func (fn createEmployeeFunc) CreateEmployee(ctx context.Context, reqEmployee Employee) (*primitive.ObjectID, error) {
 	return fn(ctx, reqEmployee)
 }
 
@@ -25,7 +25,7 @@ func CreateEmployeeHandler(svc createEmployeeFunc) echo.HandlerFunc {
 			})
 		}
 
-		newId, err := svc.CreateEmployee(c.Request().Context(), reqEmployee)
+		resId, err := svc.CreateEmployee(c.Request().Context(), reqEmployee)
 		if err != nil {
 			log.Error(err.Error())
 			return c.JSON(http.StatusInternalServerError, map[string]string{
@@ -33,7 +33,7 @@ func CreateEmployeeHandler(svc createEmployeeFunc) echo.HandlerFunc {
 			})
 		}
 		resEmployee := Employee{
-			Id:    newId,
+			ID:    *resId,
 			Name:  reqEmployee.Name,
 			Email: reqEmployee.Email,
 		}
