@@ -40,7 +40,9 @@ func main() {
 
 	mongodb := client.Database("supergo")
 
-	e.POST("/employees", employee.CreateEmployeeHandler(employee.Create(mongodb)))
+	em := e.Group("/v1/employees")
+	em.POST("", employee.CreateEmployeeHandler(employee.Create(mongodb)))
+	em.GET("/:id", employee.GetEmployeeHandler(employee.GetEmployee(mongodb)))
 
 	go func() {
 		if err := e.Start(":8080"); err != nil {

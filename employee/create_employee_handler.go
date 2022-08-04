@@ -18,7 +18,6 @@ func (fn createEmployeeFunc) CreateEmployee(ctx context.Context, reqEmployee Emp
 func CreateEmployeeHandler(svc createEmployeeFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var reqEmployee Employee
-
 		if err := c.Bind(&reqEmployee); err != nil {
 			log.Error(err.Error())
 			return c.JSON(http.StatusBadRequest, map[string]string{
