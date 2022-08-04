@@ -41,11 +41,11 @@ func GetEmployeeList(db *mongo.Database) func(context.Context) ([]Employee, erro
 }
 
 func GetEmployee(db *mongo.Database) func(context.Context, string) (*Employee, error) {
-	return func(ctx context.Context, Id string) (*Employee, error) {
+	return func(ctx context.Context, id string) (*Employee, error) {
 		collection := getEmployeeCollection(db)
 		var empRes Employee
 
-		objId, err := primitive.ObjectIDFromHex(Id)
+		objId, err := primitive.ObjectIDFromHex(id)
 		if err != nil {
 			return nil, err
 		}

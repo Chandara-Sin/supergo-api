@@ -29,8 +29,8 @@ func GetEmployeeListHandler(svc getEmployeeListFunc) echo.HandlerFunc {
 
 type getEmployeeFunc func(context.Context, string) (*Employee, error)
 
-func (fn getEmployeeFunc) GetEmployee(ctx context.Context, Id string) (*Employee, error) {
-	return fn(ctx, Id)
+func (fn getEmployeeFunc) GetEmployee(ctx context.Context, id string) (*Employee, error) {
+	return fn(ctx, id)
 }
 
 func GetEmployeeHandler(svc getEmployeeFunc) echo.HandlerFunc {
