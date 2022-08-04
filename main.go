@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"strings"
@@ -10,17 +11,26 @@ import (
 	"time"
 
 	"Chandara-Sin/supergo-api/employee"
+	"Chandara-Sin/supergo-api/logger"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"go.uber.org/zap"
 )
 
 func main() {
 	initConfig()
-	e := echo.New()
+
+	zaplog, err := zap.NewProduction()
+	if err != nil {
+		log.Fatalf("can't initialize zap logger: %v", err)
+	}
+	defer zaplog.Sync()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -44,6 +54,21 @@ func main() {
 
 	mongodb := client.Database(viper.GetString("mongo.db"))
 
+	e := echo.New()
+	// Default Level is Error
+	e.Logger.SetLevel(log.INFO)
+
+	// Log with each request
+	e.Use(middleware.Logger())
+
+	// Recover from panic
+	e.Use(middleware.Recover())
+	e.Use(logger.Middleware(zaplog))
+
+	e.GET("/healths", func(c echo.Context) error {
+		return c.String(http.StatusOK, "OK")
+	})
+
 	em := e.Group("/v1/employees")
 	em.POST("", employee.CreateEmployeeHandler(employee.Create(mongodb)))
 	em.GET("/:id", employee.GetEmployeeHandler(employee.GetEmployee(mongodb)))
@@ -63,7 +88,6 @@ func main() {
 	if err := e.Shutdown(ctx); err != nil {
 		e.Logger.Fatal(err)
 	}
-
 }
 
 func initConfig() {

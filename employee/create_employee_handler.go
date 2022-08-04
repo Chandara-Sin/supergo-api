@@ -1,11 +1,11 @@
 package employee
 
 import (
+	"Chandara-Sin/supergo-api/logger"
 	"context"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -17,26 +17,28 @@ func (fn createEmployeeFunc) CreateEmployee(ctx context.Context, reqEmployee Emp
 
 func CreateEmployeeHandler(svc createEmployeeFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var reqEmployee Employee
-		if err := c.Bind(&reqEmployee); err != nil {
+		var reqEmp Employee
+		log := logger.Unwrap(c)
+
+		if err := c.Bind(&reqEmp); err != nil {
 			log.Error(err.Error())
 			return c.JSON(http.StatusBadRequest, map[string]string{
 				"error": err.Error(),
 			})
 		}
 
-		resId, err := svc.CreateEmployee(c.Request().Context(), reqEmployee)
+		resId, err := svc.CreateEmployee(c.Request().Context(), reqEmp)
 		if err != nil {
 			log.Error(err.Error())
 			return c.JSON(http.StatusInternalServerError, map[string]string{
 				"error": err.Error(),
 			})
 		}
-		resEmployee := Employee{
+		resEmp := Employee{
 			ID:    *resId,
-			Name:  reqEmployee.Name,
-			Email: reqEmployee.Email,
+			Name:  reqEmp.Name,
+			Email: reqEmp.Email,
 		}
-		return c.JSON(http.StatusOK, resEmployee)
+		return c.JSON(http.StatusOK, resEmp)
 	}
 }
