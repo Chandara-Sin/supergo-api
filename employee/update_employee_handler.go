@@ -1,11 +1,11 @@
 package employee
 
 import (
+	"Chandara-Sin/supergo-api/logger"
 	"context"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 )
 
 type updateEmployeeFunc func(context.Context, Employee) error
@@ -17,6 +17,7 @@ func (fn updateEmployeeFunc) UpdateEmployee(ctx context.Context, reqEmployee Emp
 func UpdateEmployeeHandler(svc updateEmployeeFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var reqEmp Employee
+		log := logger.Unwrap(c)
 
 		if err := c.Bind(&reqEmp); err != nil {
 			log.Error(err.Error())

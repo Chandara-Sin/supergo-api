@@ -6,8 +6,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
+make: *** No rule to make target `all'.  Stop.
 
-# Make data base, printed on Thu Aug  4 11:35:14 2022
+
+# Make data base, printed on Thu Aug  4 23:11:13 2022
 
 # Variables
 
@@ -41,6 +44,7 @@ _ = /usr/bin/make
 MAKEFILE_LIST :=  Makefile
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+ 
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
@@ -192,9 +196,9 @@ MY_RUBY_HOME = /Users/chandarasin/.rvm/rubies/ruby-2.7.1
 
 # Directories
 
-# . (device 16777234, inode 12718911): 11 files, no impossibilities.
+# . (device 16777234, inode 12718911): 14 files, no impossibilities.
 
-# 11 files, no impossibilities in 1 directories.
+# 14 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -208,6 +212,7 @@ all:
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has not been updated.
+ 
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
@@ -269,8 +274,6 @@ down:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Thu Aug  4 11:35:14 2022
+# Finished Make data base on Thu Aug  4 23:11:13 2022
 
  
-make: *** No rule to make target `all'.  Stop.
-
