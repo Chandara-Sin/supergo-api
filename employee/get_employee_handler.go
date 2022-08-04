@@ -8,6 +8,25 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
+type getEmployeeListFunc func(context.Context) ([]Employee, error)
+
+func (fn getEmployeeListFunc) GetEmployeeList(ctx context.Context) ([]Employee, error) {
+	return fn(ctx)
+}
+
+func GetEmployeeListHandler(svc getEmployeeListFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		empRes, err := svc.GetEmployeeList(c.Request().Context())
+		if err != nil {
+			log.Error(err.Error())
+			return c.JSON(http.StatusInternalServerError, map[string]string{
+				"error": err.Error(),
+			})
+		}
+		return c.JSON(http.StatusOK, empRes)
+	}
+}
+
 type getEmployeeFunc func(context.Context, string) (*Employee, error)
 
 func (fn getEmployeeFunc) GetEmployee(ctx context.Context, Id string) (*Employee, error) {
