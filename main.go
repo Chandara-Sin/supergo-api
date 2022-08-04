@@ -2,20 +2,24 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
 	"Chandara-Sin/supergo-api/employee"
 
 	"github.com/labstack/echo/v4"
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 func main() {
+	initConfig()
 	e := echo.New()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -23,11 +27,11 @@ func main() {
 	// To configure auth via URI instead of a Credential, use
 	// "mongodb://user:password@localhost:27017".
 	credential := options.Credential{
-		Username: "root",
-		Password: "password",
+		Username: viper.GetString("mongo.user"),
+		Password: viper.GetString("mongo.password"),
 	}
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017").SetAuth(credential))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(viper.GetString("mongo.uri")).SetAuth(credential))
 	defer func() {
 		if err = client.Disconnect(ctx); err != nil {
 			panic(err)
@@ -38,14 +42,14 @@ func main() {
 		panic(err)
 	}
 
-	mongodb := client.Database("supergo")
+	mongodb := client.Database(viper.GetString("mongo.db"))
 
 	em := e.Group("/v1/employees")
 	em.POST("", employee.CreateEmployeeHandler(employee.Create(mongodb)))
 	em.GET("/:id", employee.GetEmployeeHandler(employee.GetEmployee(mongodb)))
 
 	go func() {
-		if err := e.Start(":8080"); err != nil {
+		if err := e.Start(":" + viper.GetString("app.port")); err != nil {
 			e.Logger.Info("shutting down the server")
 		}
 	}()
@@ -57,4 +61,17 @@ func main() {
 		e.Logger.Fatal(err)
 	}
 
+}
+
+func initConfig() {
+	viper.SetConfigName("config") // name of config file (without extension)
+	viper.SetConfigType("yaml")   // REQUIRED if the config file does not have the extension in the name
+	viper.AddConfigPath(".")      // optionally look for config in the working directory
+	err := viper.ReadInConfig()   // Find and read the config file
+	if err != nil {
+		fmt.Printf("Fatal error config file: %s \n", err) // Handle errors reading the config file
+	}
+
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.AutomaticEnv()
 }
