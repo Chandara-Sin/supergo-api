@@ -2,6 +2,7 @@ package employee
 
 import (
 	"context"
+	"errors"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -18,7 +19,11 @@ func DelEmployee(db *mongo.Database) func(context.Context, string) error {
 		}
 
 		filter := bson.M{"_id": bson.M{"$eq": objId}}
-		_, err = collection.DeleteOne(ctx, filter)
+		rs, err := collection.DeleteOne(ctx, filter)
+		if rs.DeletedCount < 1 {
+			return errors.New("can't delete employee")
+		}
+
 		return err
 	}
 }
