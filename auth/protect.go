@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/golang-jwt/jwt/v4"
+	jwt "github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 )
 
@@ -22,10 +22,10 @@ func Protect(signature []byte) echo.MiddlewareFunc {
 
 				return signature, nil
 			})
-
 			if err != nil {
-				c.JSON(http.StatusUnauthorized, map[string]string{
+				return c.JSON(http.StatusUnauthorized, map[string]string{
 					"status": "unauthorized",
+					"error":  err.Error(),
 				})
 			}
 
@@ -33,7 +33,6 @@ func Protect(signature []byte) echo.MiddlewareFunc {
 				aud := claims["aud"]
 				c.Set("aud", aud)
 			}
-			fmt.Println(c.Get("aud"))
 			return next(c)
 		}
 	}
