@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	"Chandara-Sin/supergo-api/auth"
 	"Chandara-Sin/supergo-api/employee"
 	"Chandara-Sin/supergo-api/logger"
 
@@ -69,7 +70,9 @@ func main() {
 		return c.String(http.StatusOK, "OK")
 	})
 
-	em := e.Group("/v1/employees")
+	e.GET("/token", auth.AccessToken(viper.GetString("auth.sign")))
+
+	em := e.Group("/v1/employees", auth.Protect([]byte(viper.GetString("auth.sign"))))
 	em.POST("", employee.CreateEmployeeHandler(employee.Create(mongodb)))
 	em.GET("/:id", employee.GetEmployeeHandler(employee.GetEmployee(mongodb)))
 	em.GET("", employee.GetEmployeeListHandler(employee.GetEmployeeList(mongodb)))
