@@ -56,6 +56,15 @@ func main() {
 	mongodb := client.Database(viper.GetString("mongo.db"))
 
 	e := echo.New()
+	// config
+	config := middleware.CORSConfig{
+		AllowHeaders:     []string{"*"},
+		AllowCredentials: true,
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	}
+	e.Use(middleware.CORSWithConfig(config))
+
 	// Default Level is Error
 	e.Logger.SetLevel(log.INFO)
 
