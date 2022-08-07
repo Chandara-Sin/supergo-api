@@ -22,7 +22,7 @@ func CreateEmployeeHandler(svc createEmployeeFunc) echo.HandlerFunc {
 
 		if err := c.Bind(&reqEmp); err != nil {
 			log.Error(err.Error())
-			return c.JSON(http.StatusBadRequest, map[string]string{
+			return c.JSON(http.StatusBadRequest, echo.Map{
 				"error": err.Error(),
 			})
 		}
@@ -30,7 +30,7 @@ func CreateEmployeeHandler(svc createEmployeeFunc) echo.HandlerFunc {
 		resId, err := svc.CreateEmployee(c.Request().Context(), reqEmp)
 		if err != nil {
 			log.Error(err.Error())
-			return c.JSON(http.StatusInternalServerError, map[string]string{
+			return c.JSON(http.StatusInternalServerError, echo.Map{
 				"error": err.Error(),
 			})
 		}
