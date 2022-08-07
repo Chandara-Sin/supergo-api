@@ -18,11 +18,11 @@ func AccessToken(signature string) echo.HandlerFunc {
 
 		ss, err := token.SignedString([]byte(signature))
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{
+			return c.JSON(http.StatusInternalServerError, echo.Map{
 				"error": err.Error(),
 			})
 		}
-		return c.JSON(http.StatusOK, map[string]string{
+		return c.JSON(http.StatusOK, echo.Map{
 			"token": ss,
 		})
 	}

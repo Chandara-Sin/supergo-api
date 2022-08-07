@@ -22,11 +22,11 @@ func DelEmployeeHandler(svc delEmployeeFunc) echo.HandlerFunc {
 		err := svc.DelEmployee(c.Request().Context(), id)
 		if err != nil {
 			log.Error(err.Error())
-			return c.JSON(http.StatusInternalServerError, map[string]string{
+			return c.JSON(http.StatusInternalServerError, echo.Map{
 				"error": err.Error(),
 			})
 		}
-		return c.JSON(http.StatusOK, map[string]string{
+		return c.JSON(http.StatusOK, echo.Map{
 			"message": "successfully delete employee with id : " + id,
 		})
 	}

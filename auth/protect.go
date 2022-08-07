@@ -19,11 +19,10 @@ func Protect(signature []byte) echo.MiddlewareFunc {
 				if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
 				}
-
 				return signature, nil
 			})
 			if err != nil {
-				return c.JSON(http.StatusUnauthorized, map[string]string{
+				return c.JSON(http.StatusUnauthorized, echo.Map{
 					"status": "unauthorized",
 					"error":  err.Error(),
 				})

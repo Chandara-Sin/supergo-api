@@ -20,7 +20,7 @@ func GetEmployeeListHandler(svc getEmployeeListFunc) echo.HandlerFunc {
 		log := logger.Unwrap(c)
 		if err != nil {
 			log.Error(err.Error())
-			return c.JSON(http.StatusInternalServerError, map[string]string{
+			return c.JSON(http.StatusInternalServerError, echo.Map{
 				"error": err.Error(),
 			})
 		}
@@ -42,7 +42,7 @@ func GetEmployeeHandler(svc getEmployeeFunc) echo.HandlerFunc {
 		empRes, err := svc.GetEmployee(c.Request().Context(), id)
 		if err != nil {
 			log.Error(err.Error())
-			return c.JSON(http.StatusInternalServerError, map[string]string{
+			return c.JSON(http.StatusInternalServerError, echo.Map{
 				"error": err.Error(),
 			})
 		}

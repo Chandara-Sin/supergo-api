@@ -20,7 +20,7 @@ func DelEmployee(db *mongo.Database) func(context.Context, string) error {
 
 		filter := bson.M{"_id": bson.M{"$eq": objId}}
 		rs, err := collection.DeleteOne(ctx, filter)
-		if rs.DeletedCount < 1 {
+		if rs.DeletedCount == 1 {
 			return errors.New("can't delete employee")
 		}
 
