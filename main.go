@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"Chandara-Sin/supergo-api/auth"
+	"Chandara-Sin/supergo-api/config"
 	"Chandara-Sin/supergo-api/employee"
 	"Chandara-Sin/supergo-api/logger"
 
@@ -18,9 +19,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.uber.org/zap"
 )
 
@@ -35,27 +33,21 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	// To configure auth via URI instead of a Credential, use
-	// "mongodb://user:password@localhost:27017".
-	credential := options.Credential{
-		Username: viper.GetString("mongo.user"),
-		Password: viper.GetString("mongo.password"),
-	}
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(viper.GetString("mongo.uri")).SetAuth(credential))
+	db := config.InitMongoDB(ctx)
 	defer func() {
-		if err = client.Disconnect(ctx); err != nil {
+		if err := db.Client.Disconnect(ctx); err != nil {
 			panic(err)
 		}
 	}()
-	err = client.Ping(ctx, readpref.Primary())
-	if err != nil {
-		panic(err)
-	}
 
-	mongodb := client.Database(viper.GetString("mongo.db"))
+	mongodb := db.Client.Database(viper.GetString("mongo.db"))
 
 	e := echo.New()
+	e.Logger.SetLevel(log.INFO)
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(logger.Middleware(zaplog))
 	// config
 	config := middleware.CORSConfig{
 		AllowHeaders:     []string{"*"},
@@ -64,16 +56,6 @@ func main() {
 		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
 	}
 	e.Use(middleware.CORSWithConfig(config))
-
-	// Default Level is Error
-	e.Logger.SetLevel(log.INFO)
-
-	// Log with each request
-	e.Use(middleware.Logger())
-
-	// Recover from panic
-	e.Use(middleware.Recover())
-	e.Use(logger.Middleware(zaplog))
 
 	e.GET("/healths", func(c echo.Context) error {
 		return c.String(http.StatusOK, "OK")
