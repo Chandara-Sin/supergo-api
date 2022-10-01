@@ -13,7 +13,7 @@ func AccessToken(signature string) echo.HandlerFunc {
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.RegisteredClaims{
 			Audience:  jwt.ClaimStrings{"Dome"},
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(5 * time.Minute)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
 		})
 
 		ss, err := token.SignedString([]byte(signature))
