@@ -12,7 +12,7 @@ import (
 
 	"Chandara-Sin/supergo-api/auth"
 	"Chandara-Sin/supergo-api/config"
-	"Chandara-Sin/supergo-api/employee"
+	"Chandara-Sin/supergo-api/domain/user"
 	"Chandara-Sin/supergo-api/logger"
 
 	"github.com/labstack/echo/v4"
@@ -64,12 +64,12 @@ func main() {
 
 	e.GET("/token", auth.AccessToken(viper.GetString("auth.sign")))
 
-	em := e.Group("/v1/employees", auth.Protect([]byte(viper.GetString("auth.sign"))))
-	em.POST("", employee.CreateEmployeeHandler(employee.Create(mongodb)))
-	em.GET("/:id", employee.GetEmployeeHandler(employee.GetEmployee(mongodb)))
-	em.GET("", employee.GetEmployeeListHandler(employee.GetEmployeeList(mongodb)))
-	em.PUT("", employee.UpdateEmployeeHandler(employee.Update(mongodb)))
-	em.DELETE("/:id", employee.DelEmployeeHandler(employee.DelEmployee(mongodb)))
+	u := e.Group("api/v1/users", auth.Protect([]byte(viper.GetString("auth.sign"))))
+	u.POST("", user.CreateUserHandler(user.Create(mongodb)))
+	u.GET("/:id", user.GetUserHandler(user.GetUser(mongodb)))
+	u.GET("", user.GetUserListHandler(user.GetUserList(mongodb)))
+	u.PUT("", user.UpdateUserHandler(user.Update(mongodb)))
+	u.DELETE("/:id", user.DeleteUserHandler(user.DeleteUser(mongodb)))
 
 	go func() {
 		if err := e.Start(":" + viper.GetString("app.port")); err != nil {
