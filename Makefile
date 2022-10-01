@@ -6,3 +6,6 @@ up:
 
 down:
 	docker compose down
+
+remove volume:
+	docker volume rm supergo-api_mongo-data
