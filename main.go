@@ -48,6 +48,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(logger.Middleware(zaplog))
+	
 	// config
 	config := middleware.CORSConfig{
 		AllowHeaders:     []string{"*"},
