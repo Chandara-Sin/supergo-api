@@ -3,7 +3,7 @@ package logger
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
@@ -18,14 +18,12 @@ func Middleware(log *zap.Logger) echo.MiddlewareFunc {
 			l := log.With(zap.String("req-id", reqID))
 			c.Set(key, l)
 
-			// Read the Body content
-			var bodyBytes []byte
+			bodyBytes := []byte{}
 			if c.Request().Body != nil {
-				bodyBytes, _ = ioutil.ReadAll(c.Request().Body)
+				bodyBytes, _ = io.ReadAll(c.Request().Body)
 			}
 
-			// Restore the io.ReadCloser to its original state
-			c.Request().Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+			c.Request().Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 			fmt.Printf("request body: %s\n", bodyBytes)
 
 			return next(c)
