@@ -6,7 +6,7 @@ docker-compose.yml
 # Generated file when install and build
 .gitignore
 .vscode
-.Makefile
+Makefile
 README.md
 /tests
 /mongo-local
