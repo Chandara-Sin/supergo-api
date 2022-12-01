@@ -1,6 +1,9 @@
 # SUPERGO-API
 
-## For development
+- ### [For Development](#development)
+- ### [Use Docker](#docker)
+
+## Development
 
 This is project use MakeFile
 
@@ -43,4 +46,29 @@ serve on `http://localhost:8080`
 
 ```sh
 make run
+```
+
+## Docker
+
+### create `config-local.yml`
+
+```yaml
+app:
+  host: localhost
+  port: "8080"
+mongo:
+  uri: mongodb://mongodb:27017
+  user:
+  password:
+  db:
+auth:
+  sign:
+```
+
+### Run Server + Docker
+
+serve on `http://localhost:8080`
+
+```sh
+docker-compose up -d
 ```
