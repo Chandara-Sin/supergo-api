@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "60df5afe-5003-4031-a67e-95e7aed678c6",
+		"name": "supergo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiRG9tZSJdLCJleHAiOjE2Njk4ODIzNTUsImlhdCI6MTY2OTg3ODc1NX0.uOzr1M6SsyCyda73vRItwBoQ7jQtI8RjEaF3Ndz5wkc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"killer\",\n    \"last_name\": \"Dragon\",\n    \"gender\": \"male\",\n    \"email\": \"killer@email.com\",\n    \"address\": {\n        \"province\": \"nakhon rachasima\",\n        \"district\": \"nai muang\",\n        \"sub_district\": \"muang\",\n        \"postcode\": \"3000\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiRG9tZSJdLCJleHAiOjE2Njk4ODIzNTUsImlhdCI6MTY2OTg3ODc1NX0.uOzr1M6SsyCyda73vRItwBoQ7jQtI8RjEaF3Ndz5wkc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiRG9tZSJdLCJleHAiOjE2Njk4ODIzNTUsImlhdCI6MTY2OTg3ODc1NX0.uOzr1M6SsyCyda73vRItwBoQ7jQtI8RjEaF3Ndz5wkc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "638853ecd9b1265826ebc162",
+					"host": [
+						"638853ecd9b1265826ebc162"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
