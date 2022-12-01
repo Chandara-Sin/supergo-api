@@ -3,6 +3,7 @@
 data
 logs
 config.yml
+config-local.yml
 
 .vscode
 db-data
