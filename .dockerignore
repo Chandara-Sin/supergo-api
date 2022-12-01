@@ -1,0 +1,13 @@
+# Docker file
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Generated file when install and build
+.gitignore
+.vscode
+.Makefile
+README.md
+/tests
+/mongo-local
+/db-data
