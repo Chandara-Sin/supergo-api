@@ -1,139 +1,194 @@
 {
-	"info": {
-		"_postman_id": "60df5afe-5003-4031-a67e-95e7aed678c6",
-		"name": "supergo",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Create User",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiRG9tZSJdLCJleHAiOjE2Njk4ODIzNTUsImlhdCI6MTY2OTg3ODc1NX0.uOzr1M6SsyCyda73vRItwBoQ7jQtI8RjEaF3Ndz5wkc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"first_name\": \"killer\",\n    \"last_name\": \"Dragon\",\n    \"gender\": \"male\",\n    \"email\": \"killer@email.com\",\n    \"address\": {\n        \"province\": \"nakhon rachasima\",\n        \"district\": \"nai muang\",\n        \"sub_district\": \"muang\",\n        \"postcode\": \"3000\"\n    }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/v1/users",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Auth",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/token",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"token"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get User List",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiRG9tZSJdLCJleHAiOjE2Njk4ODIzNTUsImlhdCI6MTY2OTg3ODc1NX0.uOzr1M6SsyCyda73vRItwBoQ7jQtI8RjEaF3Ndz5wkc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/v1/users",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get User",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiRG9tZSJdLCJleHAiOjE2Njk4ODIzNTUsImlhdCI6MTY2OTg3ODc1NX0.uOzr1M6SsyCyda73vRItwBoQ7jQtI8RjEaF3Ndz5wkc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "638853ecd9b1265826ebc162",
-					"host": [
-						"638853ecd9b1265826ebc162"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update User",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Delete User",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "cadd51d0-14f1-49b5-b810-1461f1f52bdc",
+    "name": "supergo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18432858"
+  },
+  "item": [
+    {
+      "name": "Insert User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3N1cGVyZ28tYXBpLiIsImF1ZCI6WyJzdXBlcmdvLWFwaSJdLCJleHAiOjE2NzAwNzIwMjIsImlhdCI6MTY3MDA2ODQyMn0.8VzitiySjutba0dCQs5oaifbVhNIG9qcbqPiaUnWaPA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"first_name\": \"Killer\",\n    \"last_name\": \"Dragon\",\n    \"gender\": \"male\",\n    \"email\": \"dragon@gmail.com\",\n    \"address\": {\n        \"province\": \"bangkok\",\n        \"district\": \"bangkae\",\n        \"sub_district\": \"chokchai4\",\n        \"postcode\": \"10200\"\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/v1/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["v1", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Select User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3N1cGVyZ28tYXBpLiIsImF1ZCI6WyJzdXBlcmdvLWFwaSJdLCJleHAiOjE2NzAwNzIwMjIsImlhdCI6MTY3MDA2ODQyMn0.8VzitiySjutba0dCQs5oaifbVhNIG9qcbqPiaUnWaPA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/v1/users/638b38ea9718eb6c3a78e2d5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["v1", "users", "638b38ea9718eb6c3a78e2d5"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Select User List",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3N1cGVyZ28tYXBpLiIsImF1ZCI6WyJzdXBlcmdvLWFwaSJdLCJleHAiOjE2NzAwNzIwMjIsImlhdCI6MTY3MDA2ODQyMn0.8VzitiySjutba0dCQs5oaifbVhNIG9qcbqPiaUnWaPA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiRG9tZSJdLCJleHAiOjE2NTk2ODI4MTAsImlhdCI6MTY1OTY4MjUxMH0.92NcKDGyUhrfXSx76Jeu0GqzH6mQrW5rQI-Bnr6Ppiw",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/v1/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["v1", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3N1cGVyZ28tYXBpLiIsImF1ZCI6WyJzdXBlcmdvLWFwaSJdLCJleHAiOjE2NzAwNzIwMjIsImlhdCI6MTY3MDA2ODQyMn0.8VzitiySjutba0dCQs5oaifbVhNIG9qcbqPiaUnWaPA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": \"638b2adf4c691c9547720b44\",\n    \"first_name\": \"Killer\",\n    \"last_name\": \"Dragon\",\n    \"gender\": \"male\",\n    \"email\": \"killerdragon68@gmail.com\",\n    \"address\": {\n        \"province\": \"bangkok\",\n        \"district\": \"bangkaen\",\n        \"sub_district\": \"chokchai4\",\n        \"postcode\": \"10200\"\n    },\n    \"created_at\": \"2022-10-01T12:51:12.992Z\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/v1/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["v1", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3N1cGVyZ28tYXBpLiIsImF1ZCI6WyJzdXBlcmdvLWFwaSJdLCJleHAiOjE2NzAwNzIwMjIsImlhdCI6MTY3MDA2ODQyMn0.8VzitiySjutba0dCQs5oaifbVhNIG9qcbqPiaUnWaPA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/v1/users/638b2adf4c691c9547720b44",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["v1", "users", "638b2adf4c691c9547720b44"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Token",
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "key",
+              "value": "x-api-key",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "bXkteC1hcGkta2V5JA==",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "header",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/v1/token",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["v1", "token"]
+        }
+      },
+      "response": []
+    }
+  ]
 }
