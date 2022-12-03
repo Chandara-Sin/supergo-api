@@ -20,6 +20,9 @@ mongo:
   db:
 auth:
   sign:
+api:
+  key:
+  public:
 ```
 
 ### Use Docker + MongoDB
@@ -63,6 +66,9 @@ mongo:
   db:
 auth:
   sign:
+api:
+  key:
+  public:
 ```
 
 ### Run Server + Docker
