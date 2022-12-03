@@ -2,7 +2,7 @@ run:
 	go run main.go
 
 up:
-	docker compose up db -d
+	docker compose up mongodb -d
 
 down:
 	docker compose down

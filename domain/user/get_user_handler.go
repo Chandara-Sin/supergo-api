@@ -18,14 +18,14 @@ func GetUserListHandler(svc getUserListFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		log := logger.Unwrap(c)
 
-		rs, err := svc.GetUserList(c.Request().Context())
+		usrList, err := svc.GetUserList(c.Request().Context())
 		if err != nil {
 			log.Error(err.Error())
 			return c.JSON(http.StatusInternalServerError, echo.Map{
 				"error": err.Error(),
 			})
 		}
-		return c.JSON(http.StatusOK, rs)
+		return c.JSON(http.StatusOK, usrList)
 	}
 }
 
@@ -38,15 +38,15 @@ func (fn getUserFunc) GetUser(ctx context.Context, id string) (*User, error) {
 func GetUserHandler(svc getUserFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		log := logger.Unwrap(c)
-		id := c.Param("id")
+		ID := c.Param("id")
 
-		rs, err := svc.GetUser(c.Request().Context(), id)
+		usr, err := svc.GetUser(c.Request().Context(), ID)
 		if err != nil {
 			log.Error(err.Error())
 			return c.JSON(http.StatusInternalServerError, echo.Map{
 				"error": err.Error(),
 			})
 		}
-		return c.JSON(http.StatusOK, rs)
+		return c.JSON(http.StatusOK, usr)
 	}
 }

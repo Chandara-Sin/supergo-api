@@ -48,8 +48,6 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(logger.Middleware(zaplog))
-
-	// config
 	config := middleware.CORSConfig{
 		AllowHeaders:     []string{"*"},
 		AllowCredentials: true,
@@ -58,8 +56,8 @@ func main() {
 	}
 	e.Use(middleware.CORSWithConfig(config))
 
-	e.GET("/healths", func(c echo.Context) error {
-		return c.String(http.StatusOK, "OK")
+	e.GET("/healthz", func(c echo.Context) error {
+		return c.String(http.StatusOK, "v1 OK")
 	})
 
 	e.GET("/token", auth.AccessToken(viper.GetString("auth.sign")))
@@ -86,12 +84,12 @@ func main() {
 }
 
 func initConfig() {
-	viper.SetConfigName("config") // name of config file (without extension)
-	viper.SetConfigType("yaml")   // REQUIRED if the config file does not have the extension in the name
-	viper.AddConfigPath(".")      // optionally look for config in the working directory
-	err := viper.ReadInConfig()   // Find and read the config file
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
 	if err != nil {
-		fmt.Printf("Fatal error config file: %s \n", err) // Handle errors reading the config file
+		fmt.Printf("Fatal error config file: %s \n", err)
 	}
 
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))

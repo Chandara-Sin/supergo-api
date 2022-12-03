@@ -13,7 +13,6 @@ type DB struct {
 }
 
 func InitMongoDB(ctx context.Context) *DB {
-
 	credential := options.Credential{
 		AuthMechanism: "SCRAM-SHA-1",
 		AuthSource:    viper.GetString("mongo.db"),

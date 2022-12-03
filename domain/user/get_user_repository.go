@@ -40,14 +40,13 @@ func GetUser(db *mongo.Database) func(context.Context, string) (*User, error) {
 		collection := getUserCollection(db)
 		urs := User{}
 
-		objId, err := primitive.ObjectIDFromHex(id)
+		usrID, err := primitive.ObjectIDFromHex(id)
 		if err != nil {
 			return nil, err
 		}
 
-		filter := bson.M{"_id": bson.M{"$eq": objId}}
-		rs := collection.FindOne(ctx, filter)
-		err = rs.Decode(&urs)
+		filter := bson.M{"_id": bson.M{"$eq": usrID}}
+		err = collection.FindOne(ctx, filter).Decode(&urs)
 
 		return &urs, err
 	}
