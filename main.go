@@ -15,6 +15,7 @@ import (
 	"Chandara-Sin/supergo-api/domain/user"
 	"Chandara-Sin/supergo-api/logger"
 
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
@@ -48,21 +49,26 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(logger.Middleware(zaplog))
-	config := middleware.CORSConfig{
+	CORSConfig := middleware.CORSConfig{
 		AllowHeaders:     []string{"*"},
 		AllowCredentials: true,
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
 	}
-	e.Use(middleware.CORSWithConfig(config))
+	e.Use(middleware.CORSWithConfig(CORSConfig))
 
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.String(http.StatusOK, "v1 OK")
 	})
 
-	e.GET("/token", auth.AccessToken(viper.GetString("auth.sign")))
+	e.GET("/v1/token", auth.AccessToken(viper.GetString("auth.sign")))
 
-	u := e.Group("api/v1/users", auth.Protect([]byte(viper.GetString("auth.sign"))))
+	JWTConfig := middleware.JWTConfig{
+		Claims:     &jwt.RegisteredClaims{},
+		SigningKey: []byte(viper.GetString("auth.sign")),
+	}
+	u := e.Group("/v1/users", middleware.JWTWithConfig(JWTConfig))
+
 	u.POST("", user.CreateUserHandler(user.Create(mongodb)))
 	u.GET("/:id", user.GetUserHandler(user.GetUser(mongodb)))
 	u.GET("", user.GetUserListHandler(user.GetUserList(mongodb)))
