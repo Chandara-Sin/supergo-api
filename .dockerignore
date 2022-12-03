@@ -8,6 +8,6 @@ docker-compose.yml
 .vscode
 Makefile
 README.md
-/tests
+/docs
 /mongo-local
 /db-data
