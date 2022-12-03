@@ -61,14 +61,16 @@ func main() {
 		return c.String(http.StatusOK, "v1 OK")
 	})
 
-	e.GET("/v1/token", auth.AccessToken(viper.GetString("auth.sign")))
+	e.GET("/v1/token", auth.AccessToken(viper.GetString("auth.sign")), middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
+		KeyLookup: "header:" + viper.GetString("api.key"),
+		Validator: auth.ValidatorOnlyAPIKey(viper.GetString("api.public")),
+	}))
 
 	JWTConfig := middleware.JWTConfig{
 		Claims:     &jwt.RegisteredClaims{},
 		SigningKey: []byte(viper.GetString("auth.sign")),
 	}
 	u := e.Group("/v1/users", middleware.JWTWithConfig(JWTConfig))
-
 	u.POST("", user.CreateUserHandler(user.Create(mongodb)))
 	u.GET("/:id", user.GetUserHandler(user.GetUser(mongodb)))
 	u.GET("", user.GetUserListHandler(user.GetUserList(mongodb)))

@@ -1,11 +1,13 @@
 package auth
 
 import (
+	b64 "encoding/base64"
 	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func AccessToken(signature string) echo.HandlerFunc {
@@ -27,5 +29,12 @@ func AccessToken(signature string) echo.HandlerFunc {
 			"token":      at,
 			"token_type": "Bearer",
 		})
+	}
+}
+
+func ValidatorOnlyAPIKey(apikey string) middleware.KeyAuthValidator {
+	return func(apiKeyHeader string, c echo.Context) (bool, error) {
+		apiKeyEnc := b64.StdEncoding.EncodeToString([]byte(apikey))
+		return apiKeyHeader == apiKeyEnc, nil
 	}
 }
