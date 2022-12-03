@@ -17,20 +17,20 @@ func (fn createUserFunc) CreateUser(ctx context.Context, reqUser User) error {
 
 func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var reqEmp User
+		usr := User{}
 		log := logger.Unwrap(c)
 
-		if err := c.Bind(&reqEmp); err != nil {
+		if err := c.Bind(&usr); err != nil {
 			log.Error(err.Error())
 			return c.JSON(http.StatusBadRequest, echo.Map{
 				"error": err.Error(),
 			})
 		}
 
-		reqEmp.CreatedAt = time.Now()
-		reqEmp.UpdatedAt = time.Now()
+		usr.CreatedAt = time.Now()
+		usr.UpdatedAt = time.Now()
 
-		err := svc.CreateUser(c.Request().Context(), reqEmp)
+		err := svc.CreateUser(c.Request().Context(), usr)
 		if err != nil {
 			log.Error(err.Error())
 			return c.JSON(http.StatusInternalServerError, echo.Map{
