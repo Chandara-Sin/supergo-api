@@ -16,6 +16,7 @@ import (
 	"Chandara-Sin/supergo-api/logger"
 
 	"github.com/golang-jwt/jwt/v4"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
@@ -66,11 +67,13 @@ func main() {
 		Validator: auth.ValidatorOnlyAPIKey(viper.GetString("api.public")),
 	}))
 
-	JWTConfig := middleware.JWTConfig{
-		Claims:     &jwt.RegisteredClaims{},
+	JWTConfig := echojwt.Config{
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return new(jwt.RegisteredClaims)
+		},
 		SigningKey: []byte(viper.GetString("auth.sign")),
 	}
-	u := e.Group("/v1/users", middleware.JWTWithConfig(JWTConfig))
+	u := e.Group("/v1/users", echojwt.WithConfig(JWTConfig))
 	u.POST("", user.CreateUserHandler(user.Create(mongodb)))
 	u.GET("/:id", user.GetUserHandler(user.GetUser(mongodb)))
 	u.GET("", user.GetUserListHandler(user.GetUserList(mongodb)))
