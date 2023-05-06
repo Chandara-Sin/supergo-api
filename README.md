@@ -19,10 +19,10 @@ mongo:
   password:
   db:
 auth:
-  sign:
+  sign: <signagure-value>
 api:
-  key:
-  public:
+  key: x-api-key
+  public: <public-key-vlaue>
 ```
 
 ### Use Docker + MongoDB

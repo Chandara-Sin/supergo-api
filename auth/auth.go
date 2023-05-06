@@ -2,7 +2,6 @@ package auth
 
 import (
 	b64 "encoding/base64"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -35,7 +34,6 @@ func AccessToken(signature string) echo.HandlerFunc {
 
 func ValidatorOnlyAPIKey(apikey string) middleware.KeyAuthValidator {
 	return func(apiKeyHeader string, c echo.Context) (bool, error) {
-		fmt.Println("key", apiKeyHeader)
 		apiKeyEnc := b64.StdEncoding.EncodeToString([]byte(apikey))
 		return apiKeyHeader == apiKeyEnc, nil
 	}
