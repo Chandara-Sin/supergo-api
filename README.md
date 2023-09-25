@@ -5,7 +5,8 @@
 
 ## Development
 
-This is project use MakeFile
+This is project use MakeFile\
+Go version 1.21.1
 
 ### create `config.yml`
 
@@ -22,7 +23,7 @@ auth:
   sign: <signagure-value>
 api:
   key: x-api-key
-  public: <public-key-vlaue>
+  public: <public-key-value>
 ```
 
 ### Use Docker + MongoDB
