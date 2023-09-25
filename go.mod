@@ -1,6 +1,6 @@
 module Chandara-Sin/supergo-api
 
-go 1.20
+go 1.21.1
 
 require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
@@ -9,7 +9,7 @@ require (
 	github.com/labstack/gommon v0.4.0
 	github.com/spf13/viper v1.15.0
 	go.mongodb.org/mongo-driver v1.11.6
-	go.uber.org/zap v1.24.0
+	go.uber.org/zap v1.26.0
 )
 
 require (
