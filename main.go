@@ -21,13 +21,12 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
 )
 
 func main() {
 	initConfig()
 
-	zaplog, err := zap.NewProduction()
+	zaplog, err := logger.MWLogger()
 	if err != nil {
 		log.Fatalf("can't initialize zap logger: %v", err)
 	}
@@ -46,10 +45,8 @@ func main() {
 	mongodb := db.Client.Database(viper.GetString("mongo.db"))
 
 	e := echo.New()
-	e.Logger.SetLevel(log.INFO)
-	e.Use(middleware.Logger())
+	e.Use(middleware.RequestLoggerWithConfig(logger.ReqLoggerConfig(zaplog)))
 	e.Use(middleware.Recover())
-	e.Use(logger.Middleware(zaplog))
 	CORSConfig := middleware.CORSConfig{
 		AllowHeaders:     []string{"*"},
 		AllowCredentials: true,

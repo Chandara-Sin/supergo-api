@@ -2,14 +2,77 @@ package logger
 
 import (
 	"bytes"
+	"crypto/rand"
 	"fmt"
 	"io"
+	"math"
+	"math/big"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 const key = "logger"
+
+func MWLogger() (*zap.Logger, error) {
+	encoderCfg := zap.NewProductionEncoderConfig()
+	encoderCfg.TimeKey = "timestamp"
+	encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
+
+	zapConfig := zap.Config{
+		Level:             zap.NewAtomicLevelAt(zap.InfoLevel),
+		Development:       false,
+		DisableCaller:     false,
+		DisableStacktrace: false,
+		Sampling:          nil,
+		Encoding:          "json",
+		EncoderConfig:     encoderCfg,
+		OutputPaths: []string{
+			"stderr",
+		},
+		ErrorOutputPaths: []string{
+			"stderr",
+		}, InitialFields: map[string]interface{}{
+			"trace_id": GetTraceId(),
+		},
+	}
+
+	return zapConfig.Build()
+}
+
+func ReqLoggerConfig(log *zap.Logger) middleware.RequestLoggerConfig {
+	return middleware.RequestLoggerConfig{
+		LogURI:       true,
+		LogStatus:    true,
+		LogMethod:    true,
+		LogHost:      true,
+		LogRemoteIP:  true,
+		LogUserAgent: true,
+		LogError:     true,
+		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+			log.Info("request",
+				zap.String("uri", v.URI),
+				zap.Int("status", v.Status),
+				zap.String("method", v.Method),
+				zap.String("host", v.Host),
+				zap.String("remote_ip", v.RemoteIP),
+				zap.String("user_agent", v.UserAgent),
+				zap.NamedError("error", v.Error),
+			)
+			return nil
+		},
+	}
+}
+
+func GetTraceId() string {
+	bi, _ := rand.Int(
+		rand.Reader,
+		big.NewInt(int64(math.Pow(10, float64(10)))),
+	)
+	return "SUP-" + fmt.Sprintf("%010d", bi)
+}
 
 func Middleware(log *zap.Logger) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
