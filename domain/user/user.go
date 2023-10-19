@@ -15,8 +15,8 @@ const (
 	NotApplicable Gender = "n/a"
 )
 
-func (usr *User) SetUserID(usrID int64) {
-	usr.UserId = "US" + fmt.Sprintf("%05d", usrID)
+func (usr *User) SetUserID(usrId int64) {
+	usr.UserId = "US" + fmt.Sprintf("%05d", usrId)
 }
 
 type User struct {
@@ -37,3 +37,10 @@ type Address struct {
 	SubDistrict string `bson:"sub_district" json:"sub_district"`
 	Postcode    string `bson:"postcode" json:"postcode"`
 }
+
+const (
+	CreateUserError = "SUP-USR-40001"
+	GetUserError    = "SUP-USR-40002"
+	UpdateUserError = "SUP-USR-40003"
+	DeleteUserError = "SUP-USR-40004"
+)

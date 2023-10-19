@@ -1,6 +1,7 @@
 package user
 
 import (
+	exc "Chandara-Sin/supergo-api/exception"
 	"Chandara-Sin/supergo-api/logger"
 	"context"
 	"net/http"
@@ -20,10 +21,14 @@ func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 		usr := User{}
 		log := logger.Unwrap(c)
 
+		// Todo
+		// Get trace_id from context
 		if err := c.Bind(&usr); err != nil {
 			log.Error(err.Error())
-			return c.JSON(http.StatusBadRequest, echo.Map{
-				"error": err.Error(),
+			return c.JSON(http.StatusBadRequest, exc.ErrorRes{
+				Code:    CreateUserError,
+				TraceId: "trace_id",
+				Message: err.Error(),
 			})
 		}
 
