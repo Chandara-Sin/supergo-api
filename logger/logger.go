@@ -14,7 +14,8 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-const key = "trace_id"
+const key = "logger"
+const traceKey = "trace_id"
 
 func MWLogger() (*zap.Logger, error) {
 	encoderCfg := zap.NewProductionEncoderConfig()
@@ -50,12 +51,11 @@ func ReqLoggerConfig(log *zap.Logger) middleware.RequestLoggerConfig {
 		LogUserAgent: true,
 		LogError:     true,
 		BeforeNextFunc: func(c echo.Context) {
-			traceId := GetTraceId()
-			c.Set(key, traceId)
+			c.Set(traceKey, GetTraceId())
 		},
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
 			log.Info("request",
-				zap.String("trace_id", c.Get(key).(string)),
+				zap.String("trace_id", c.Get(traceKey).(string)),
 				zap.String("uri", v.URI),
 				zap.Int("status", v.Status),
 				zap.String("method", v.Method),
@@ -98,7 +98,7 @@ func Middleware(log *zap.Logger) echo.MiddlewareFunc {
 }
 
 func Unwrap(c echo.Context) (*zap.Logger, string) {
-	val := c.Get(key)
+	val := c.Get(traceKey)
 	if traceId, ok := val.(string); ok {
 		return zap.NewExample(), traceId
 	}
