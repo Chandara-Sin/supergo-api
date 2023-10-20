@@ -24,7 +24,6 @@ func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 		if err := c.Bind(&usr); err != nil {
 			errRes := exc.ErrorRes{
 				Code:    CreateUserError,
-				TraceId: "traceId",
 				Message: err.Error(),
 			}
 			exc.LogError(log, errRes)
@@ -38,7 +37,6 @@ func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 		if err != nil {
 			errRes := exc.ErrorRes{
 				Code:    CreateUserError,
-				TraceId: "traceId",
 				Message: err.Error(),
 			}
 			exc.LogError(log, errRes)

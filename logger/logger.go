@@ -15,7 +15,6 @@ import (
 )
 
 const key = "logger"
-const traceKey = "trace_id"
 
 func MWLogger() (*zap.Logger, error) {
 	encoderCfg := zap.NewProductionEncoderConfig()
@@ -52,7 +51,7 @@ func ReqLoggerConfig(log *zap.Logger) middleware.RequestLoggerConfig {
 		LogError:     true,
 		BeforeNextFunc: func(c echo.Context) {
 			traceId := GetTraceId()
-			l := log.With(zap.String(traceKey, traceId))
+			l := log.With(zap.String("trace_id", traceId))
 			c.Set(key, l)
 		},
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
