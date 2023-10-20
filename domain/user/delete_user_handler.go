@@ -1,11 +1,13 @@
 package user
 
 import (
+	exc "Chandara-Sin/supergo-api/exception"
 	"Chandara-Sin/supergo-api/logger"
 	"context"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 )
 
 type deleteUserFunc func(context.Context, string) error
@@ -21,10 +23,15 @@ func DeleteUserHandler(svc deleteUserFunc) echo.HandlerFunc {
 
 		err := svc.DeleteUser(c.Request().Context(), ID)
 		if err != nil {
-			log.Error(err.Error())
-			return c.JSON(http.StatusInternalServerError, echo.Map{
-				"error": err.Error(),
-			})
+			errRes := exc.ErrorRes{
+				Code:    DeleteUserError,
+				Message: err.Error(),
+			}
+			log.Error("error",
+				zap.String("code", errRes.Code),
+				zap.Error(err),
+			)
+			return c.JSON(http.StatusInternalServerError, errRes)
 		}
 
 		return c.JSON(http.StatusOK, echo.Map{

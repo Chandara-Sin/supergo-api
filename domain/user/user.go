@@ -39,8 +39,9 @@ type Address struct {
 }
 
 const (
-	CreateUserError = "SUP-USR-40001"
-	GetUserError    = "SUP-USR-40002"
-	UpdateUserError = "SUP-USR-40003"
-	DeleteUserError = "SUP-USR-40004"
+	CreateUserError  = "SUP-USR-40001"
+	GetUserError     = "SUP-USR-40002"
+	GetUserListError = "SUP-USR-40003"
+	UpdateUserError  = "SUP-USR-40004"
+	DeleteUserError  = "SUP-USR-40005"
 )

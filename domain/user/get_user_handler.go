@@ -1,11 +1,13 @@
 package user
 
 import (
+	exc "Chandara-Sin/supergo-api/exception"
 	"Chandara-Sin/supergo-api/logger"
 	"context"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 )
 
 type getUserListFunc func(context.Context) ([]User, error)
@@ -20,10 +22,15 @@ func GetUserListHandler(svc getUserListFunc) echo.HandlerFunc {
 
 		usrList, err := svc.GetUserList(c.Request().Context())
 		if err != nil {
-			log.Error(err.Error())
-			return c.JSON(http.StatusInternalServerError, echo.Map{
-				"error": err.Error(),
-			})
+			errRes := exc.ErrorRes{
+				Code:    GetUserError,
+				Message: err.Error(),
+			}
+			log.Error("error",
+				zap.String("code", errRes.Code),
+				zap.Error(err),
+			)
+			return c.JSON(http.StatusInternalServerError, errRes)
 		}
 		return c.JSON(http.StatusOK, usrList)
 	}
@@ -42,10 +49,15 @@ func GetUserHandler(svc getUserFunc) echo.HandlerFunc {
 
 		usr, err := svc.GetUser(c.Request().Context(), ID)
 		if err != nil {
-			log.Error(err.Error())
-			return c.JSON(http.StatusInternalServerError, echo.Map{
-				"error": err.Error(),
-			})
+			errRes := exc.ErrorRes{
+				Code:    GetUserListError,
+				Message: err.Error(),
+			}
+			log.Error("error",
+				zap.String("code", errRes.Code),
+				zap.Error(err),
+			)
+			return c.JSON(http.StatusInternalServerError, errRes)
 		}
 		return c.JSON(http.StatusOK, usr)
 	}

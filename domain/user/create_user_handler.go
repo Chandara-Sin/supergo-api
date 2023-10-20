@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 )
 
 type createUserFunc func(context.Context, User) error
@@ -26,7 +27,10 @@ func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 				Code:    CreateUserError,
 				Message: err.Error(),
 			}
-			exc.LogError(log, errRes)
+			log.Error("error",
+				zap.String("code", errRes.Code),
+				zap.Error(err),
+			)
 			return c.JSON(http.StatusBadRequest, errRes)
 		}
 
@@ -39,7 +43,10 @@ func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 				Code:    CreateUserError,
 				Message: err.Error(),
 			}
-			exc.LogError(log, errRes)
+			log.Error("error",
+				zap.String("code", errRes.Code),
+				zap.Error(err),
+			)
 			return c.JSON(http.StatusInternalServerError, errRes)
 		}
 		return c.JSON(http.StatusOK, echo.Map{
