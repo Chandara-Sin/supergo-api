@@ -1,17 +1,22 @@
 package auth
 
 import (
+	exc "Chandara-Sin/supergo-api/exception"
+	"Chandara-Sin/supergo-api/logger"
 	"fmt"
 	"net/http"
 	"strings"
 
 	jwt "github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 )
 
 func Protect(signature []byte) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
+			log := logger.Unwrap(c)
+
 			auth := c.Request().Header.Get("Authorization")
 			tokenString := strings.TrimPrefix(auth, "Bearer ")
 
@@ -22,10 +27,15 @@ func Protect(signature []byte) echo.MiddlewareFunc {
 				return signature, nil
 			})
 			if err != nil {
-				return c.JSON(http.StatusUnauthorized, echo.Map{
-					"status": "unauthorized",
-					"error":  err.Error(),
-				})
+				errRes := exc.ErrorRes{
+					Code:    AuthError,
+					Message: err.Error(),
+				}
+				log.Error("error",
+					zap.String("code", AuthError),
+					zap.Error(err),
+				)
+				return c.JSON(http.StatusUnauthorized, errRes)
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok {
