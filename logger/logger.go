@@ -34,8 +34,6 @@ func MWLogger() (*zap.Logger, error) {
 		},
 		ErrorOutputPaths: []string{
 			"stderr",
-		}, InitialFields: map[string]interface{}{
-			"trace_id": GetTraceId(),
 		},
 	}
 
@@ -51,8 +49,13 @@ func ReqLoggerConfig(log *zap.Logger) middleware.RequestLoggerConfig {
 		LogRemoteIP:  true,
 		LogUserAgent: true,
 		LogError:     true,
+		BeforeNextFunc: func(c echo.Context) {
+			traceId := GetTraceId()
+			c.Set("trace_id", traceId)
+		},
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
 			log.Info("request",
+				zap.String("trace_id", c.Get("trace_id").(string)),
 				zap.String("uri", v.URI),
 				zap.Int("status", v.Status),
 				zap.String("method", v.Method),

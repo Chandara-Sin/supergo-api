@@ -20,16 +20,16 @@ func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		usr := User{}
 		log := logger.Unwrap(c)
+		traceId := c.Get("trace_id").(string)
 
-		// Todo
-		// Get trace_id from context
 		if err := c.Bind(&usr); err != nil {
-			log.Error(err.Error())
-			return c.JSON(http.StatusBadRequest, exc.ErrorRes{
+			errRes := exc.ErrorRes{
 				Code:    CreateUserError,
-				TraceId: "trace_id",
+				TraceId: traceId,
 				Message: err.Error(),
-			})
+			}
+			exc.LogError(log, errRes)
+			return c.JSON(http.StatusBadRequest, errRes)
 		}
 
 		usr.CreatedAt = time.Now()
@@ -37,10 +37,13 @@ func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 
 		err := svc.CreateUser(c.Request().Context(), usr)
 		if err != nil {
-			log.Error(err.Error())
-			return c.JSON(http.StatusInternalServerError, echo.Map{
-				"error": err.Error(),
-			})
+			errRes := exc.ErrorRes{
+				Code:    CreateUserError,
+				TraceId: traceId,
+				Message: err.Error(),
+			}
+			exc.LogError(log, errRes)
+			return c.JSON(http.StatusInternalServerError, errRes)
 		}
 		return c.JSON(http.StatusOK, echo.Map{
 			"message": "status ok",

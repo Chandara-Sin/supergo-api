@@ -44,8 +44,6 @@ func main() {
 
 	mongodb := db.Client.Database(viper.GetString("mongo.db"))
 
-	// Todo
-	// Custom logger with set context
 	e := echo.New()
 	e.Use(middleware.RequestLoggerWithConfig(logger.ReqLoggerConfig(zaplog)))
 	e.Use(middleware.Recover())
