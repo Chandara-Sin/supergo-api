@@ -22,7 +22,7 @@ func DeleteUser(db *mongo.Database) func(context.Context, string) error {
 		rs, err := collection.DeleteOne(ctx, filter)
 
 		if rs.DeletedCount == 0 {
-			return errors.New("can't delete employee")
+			return errors.New("endpoint is not found")
 		}
 
 		return err

@@ -50,7 +50,7 @@ func ReqLoggerConfig(log *zap.Logger) middleware.RequestLoggerConfig {
 		LogUserAgent: true,
 		LogError:     true,
 		BeforeNextFunc: func(c echo.Context) {
-			traceId := GetTraceId()
+			traceId := getTraceId()
 			l := log.With(zap.String("trace_id", traceId))
 			c.Set(key, l)
 		},
@@ -70,7 +70,7 @@ func ReqLoggerConfig(log *zap.Logger) middleware.RequestLoggerConfig {
 	}
 }
 
-func GetTraceId() string {
+func getTraceId() string {
 	bi, _ := rand.Int(
 		rand.Reader,
 		big.NewInt(int64(math.Pow(10, float64(10)))),

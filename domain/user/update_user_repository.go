@@ -31,7 +31,7 @@ func Update(db *mongo.Database) func(context.Context, User) error {
 
 		rs, err := collection.UpdateByID(ctx, objID, bson.D{{Key: "$set", Value: updatedEmp}})
 		if rs.ModifiedCount == 0 {
-			return errors.New("can not update")
+			return errors.New("endpoint is not found")
 		}
 		return err
 	}
