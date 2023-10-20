@@ -19,8 +19,7 @@ func (fn createUserFunc) CreateUser(ctx context.Context, reqUser User) error {
 func CreateUserHandler(svc createUserFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		usr := User{}
-		log := logger.Unwrap(c)
-		traceId := c.Get("trace_id").(string)
+		log, traceId := logger.Unwrap(c)
 
 		if err := c.Bind(&usr); err != nil {
 			errRes := exc.ErrorRes{
