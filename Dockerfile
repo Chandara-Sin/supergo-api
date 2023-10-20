@@ -1,9 +1,12 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.21.1-alpine AS build
+FROM golang:1.21.1-bullseye AS build
 WORKDIR /app
 COPY go.mod go.sum ./
-RUN go mod download
+
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    go mod download
 
 COPY . .
 RUN CGO_ENABLED=0 go build -v -o /supergo-api
