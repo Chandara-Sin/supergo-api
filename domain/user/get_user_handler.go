@@ -16,7 +16,7 @@ func (fn getUserListFunc) GetUserList(ctx context.Context) ([]User, error) {
 
 func GetUserListHandler(svc getUserListFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		log, _ := logger.Unwrap(c)
+		log := logger.Unwrap(c)
 
 		usrList, err := svc.GetUserList(c.Request().Context())
 		if err != nil {
@@ -37,7 +37,7 @@ func (fn getUserFunc) GetUser(ctx context.Context, id string) (*User, error) {
 
 func GetUserHandler(svc getUserFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		log, _ := logger.Unwrap(c)
+		log := logger.Unwrap(c)
 		ID := c.Param("id")
 
 		usr, err := svc.GetUser(c.Request().Context(), ID)

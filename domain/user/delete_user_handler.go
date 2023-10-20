@@ -16,7 +16,7 @@ func (fn deleteUserFunc) DeleteUser(ctx context.Context, id string) error {
 
 func DeleteUserHandler(svc deleteUserFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		log, _ := logger.Unwrap(c)
+		log := logger.Unwrap(c)
 		ID := c.Param("id")
 
 		err := svc.DeleteUser(c.Request().Context(), ID)

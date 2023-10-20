@@ -51,11 +51,13 @@ func ReqLoggerConfig(log *zap.Logger) middleware.RequestLoggerConfig {
 		LogUserAgent: true,
 		LogError:     true,
 		BeforeNextFunc: func(c echo.Context) {
-			c.Set(traceKey, GetTraceId())
+			traceId := GetTraceId()
+			l := log.With(zap.String(traceKey, traceId))
+			c.Set(key, l)
 		},
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
-			log.Info("request",
-				zap.String("trace_id", c.Get(traceKey).(string)),
+			l := Unwrap(c)
+			l.Info("request",
 				zap.String("uri", v.URI),
 				zap.Int("status", v.Status),
 				zap.String("method", v.Method),
@@ -77,6 +79,14 @@ func GetTraceId() string {
 	return "SUP-" + fmt.Sprintf("%010d", bi)
 }
 
+func Unwrap(c echo.Context) *zap.Logger {
+	val := c.Get(key)
+	if log, ok := val.(*zap.Logger); ok {
+		return log
+	}
+	return zap.NewExample()
+}
+
 func Middleware(log *zap.Logger) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -95,12 +105,4 @@ func Middleware(log *zap.Logger) echo.MiddlewareFunc {
 			return next(c)
 		}
 	}
-}
-
-func Unwrap(c echo.Context) (*zap.Logger, string) {
-	val := c.Get(traceKey)
-	if traceId, ok := val.(string); ok {
-		return zap.NewExample(), traceId
-	}
-	return zap.NewExample(), ""
 }

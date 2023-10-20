@@ -17,7 +17,7 @@ func (fn updateUserFunc) UpdateUser(ctx context.Context, usr User) error {
 
 func UpdateUserHandler(svc updateUserFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		log, _ := logger.Unwrap(c)
+		log := logger.Unwrap(c)
 		usr := User{}
 
 		if err := c.Bind(&usr); err != nil {
