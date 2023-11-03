@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.4
 
 FROM golang:1.21.1-bullseye AS build
 WORKDIR /app
