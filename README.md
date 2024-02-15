@@ -1,11 +1,14 @@
 # SUPERGO-API
 
+[![run time: Makefile](https://img.shields.io/badge/Run_Time-Makefile-e63946.svg?style=flat-square)](https://makefiletutorial.com/#makefile-cookbook)
+
+[![Go: Version](https://img.shields.io/badge/Go_Version_1.12.1-007d9c.svg?style=flat-square)](https://makefiletutorial.com/#makefile-cookbook)
+
 - ### [For Development](#development)
 - ### [Use Docker](#docker)
 
 ## Development
 
-This is project use MakeFile\
 Go version 1.21.1
 
 ### create `config.yml`
